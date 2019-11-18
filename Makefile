@@ -60,7 +60,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDES) | $(OBJDIR)
 	$(CC) $(CFLAGS) -I./includes -c $< -o $@
 
 clean:
-	rm -r $(OBJDIR)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
