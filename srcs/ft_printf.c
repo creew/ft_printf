@@ -49,7 +49,7 @@ int				ft_allprintf(const char *format, va_list *ptr,
 	int			out;
 
 	out = 0;
-	pf_memset(&print, 0, sizeof(t_print));
+	pf_bzero(&print, sizeof(t_print));
 	print.write_func = f;
 	print.write_param = param;
 	while (*format)
@@ -67,27 +67,5 @@ int				ft_allprintf(const char *format, va_list *ptr,
 			out += add_to_out(&print, *format++);
 	}
 	flush_buf(&print);
-	return (out);
-}
-
-int				ft_printf(const char *format, ...)
-{
-	va_list		ptr;
-	int			out;
-
-	va_start(ptr, format);
-	out = ft_allprintf(format, &ptr, fp_write_c, 0);
-	va_end(ptr);
-	return (out);
-}
-
-int				ft_sprintf(char *s, const char *format, ...)
-{
-	va_list		ptr;
-	int			out;
-
-	va_start(ptr, format);
-	out = ft_allprintf(format, &ptr, s_write_c, s);
-	va_end(ptr);
 	return (out);
 }
