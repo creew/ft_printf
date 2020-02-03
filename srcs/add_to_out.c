@@ -18,9 +18,9 @@ void	flush_buf(t_print *print)
 	print->buf_len = 0;
 }
 
-int		add_to_out(t_print *print, char c)
+int		add_to_out(t_print *print, int c)
 {
-	print->buf[print->buf_len++] = c;
+	print->buf[print->buf_len++] = (char)c;
 	if (print->buf_len >= sizeof(print->buf))
 		flush_buf(print);
 	return (1);

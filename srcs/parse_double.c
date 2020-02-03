@@ -48,11 +48,11 @@ int			longb_cmpn(t_longb *a, t_longb *b, int n)
 	t_ulong		valb;
 
 	count = 0;
-	while (n >= 9)
+	while (n >= LONG_BASE_ORDER)
 	{
 		if (a->val[count] != b->val[count])
 			return (1);
-		n -= 9;
+		n -= LONG_BASE_ORDER;
 		count++;
 	}
 	vala = a->val[count];

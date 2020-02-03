@@ -68,7 +68,7 @@ int				parse_cstr(t_print *print, char *str)
 	return (count);
 }
 
-int				parse_string(char type, t_print *print, va_list *ptr)
+int				parse_string(int type, t_print *print, va_list *ptr)
 {
 	wchar_t		*wstr;
 	char		*cstr;

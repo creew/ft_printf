@@ -23,15 +23,18 @@
 # define MIN(a, b) ((a) < (b) ? (a) : (b))
 # define MAX(a, b) ((a) > (b) ? (a) : (b))
 
-# define BUF_SIZE	64
+# define BUF_SIZE	128
 
 # define FLAGS_STR "+- #0"
-# define FLAG_PLUS	1
-# define FLAG_MINUS	2
-# define FLAG_SPACE	4
-# define FLAG_HASH	8
-# define FLAG_NULL	16
-# define FLAG_APOSTROFE 32
+# define FLAG_PLUS	(1u)
+# define FLAG_MINUS	(2u)
+# define FLAG_SPACE	(4u)
+# define FLAG_HASH	(8u)
+# define FLAG_NULL	(16u)
+# define FLAG_APOSTROFE (32u)
+
+# define LONG_BASE  (1ul * 1000ul * 1000ul * 1000ul * 1000ul * 1000ul * 1000ul)
+# define LONG_BASE_ORDER (18)
 
 # define TYPES_STR "cCsSpdDiIoOuUxXfF"
 
@@ -101,7 +104,7 @@ typedef struct	s_print
 
 	int			type;
 	int			is_precision;
-	int			flags;
+	t_uint		flags;
 	int			width;
 	int			precision;
 	int			lenmod;
@@ -117,7 +120,6 @@ typedef struct	s_print
 typedef struct	s_fpoint
 {
 	t_ulong		is_neg;
-	long		shift;
 	long		exp;
 	t_ulong		mant;
 	t_llong		lval;
@@ -126,10 +128,10 @@ typedef struct	s_fpoint
 
 typedef struct	s_longb
 {
-	t_uint		val[100];
+	t_ulong		val[50];
 	int			max_size;
 	int			size;
-	size_t		base;
+	t_ulong		base;
 }				t_longb;
 
 int				ft_printf(const char *format, ...);
@@ -140,7 +142,7 @@ int				ft_dprintf(int fd, const char *format, ...);
 int				ft_allprintf(const char *format, va_list *ptr,
 								void (f)(void **, char *, size_t), void *param);
 
-int				add_to_out(t_print *print, char c);
+int				add_to_out(t_print *print, int c);
 int				addw_to_out(t_print *print, wint_t wc);
 void			flush_buf(t_print *print);
 
@@ -152,8 +154,8 @@ int				parse_type(t_print *print, const char *format);
 int				parse_lenmod(t_print *print, const char *format);
 
 int				parse_format(t_print *print, va_list *ptr);
-int				parse_character(char type, t_print *print, va_list *ptr);
-int				parse_string(char type, t_print *print, va_list *ptr);
+int				parse_character(int type, t_print *print, va_list *ptr);
+int				parse_string(int type, t_print *print, va_list *ptr);
 
 int				add_c_with_flag(t_print *print, char *c, int len);
 int				add_wc_with_flag(t_print *print, wchar_t *wc, int len);
@@ -178,11 +180,10 @@ int				round_double(t_print *print, t_fpoint *fdata,
 int				init_longb(t_longb *longb, t_ulong val);
 int				add_longb(t_longb *a, t_longb *b);
 int				div2_longb_uint(t_longb *longb);
-int				div_longb_uint(t_longb *longb, t_uint a);
+int				div_longb_10(t_longb *longb);
 int				add_longb_uint(t_longb *a, t_uint b);
 
 int				init_max_val(t_longb *val);
-int				init_half_val(t_longb *val);
 int				get_longb_len(t_longb *longb);
 void			add_precision(t_print *print);
 
@@ -195,7 +196,7 @@ int				pf_tolower(int c);
 int				add_pad_and_uval(t_print *print, t_ullong val, int base);
 int				calc_digit_pre_len(t_print *print);
 int				parse_cstr(t_print *print, char *str);
-int				get_val_by_pos(t_longb *longb, int pos);
+t_ullong		get_val_by_pos(t_longb *longb, int pos);
 int				longb_cmpn(t_longb *a, t_longb *b, int n);
 
 void			fp_write_c(void **param, char *data, size_t len);

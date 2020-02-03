@@ -16,7 +16,7 @@ int		init_longb(t_longb *longb, t_ulong val)
 {
 	longb->size = 0;
 	longb->max_size = (sizeof(longb->val) / sizeof(longb->val[0])) - 1;
-	longb->base = 1 * 1000 * 1000 * 1000;
+	longb->base = LONG_BASE;
 	if (!val)
 		longb->val[longb->size++] = 0;
 	else
@@ -29,6 +29,10 @@ int		init_longb(t_longb *longb, t_ulong val)
 	}
 	return (1);
 }
+
+/*
+**  Adds b value to a value
+*/
 
 int		add_longb(t_longb *a, t_longb *b)
 {
@@ -91,8 +95,8 @@ int		div2_longb_uint(t_longb *longb)
 	counta = longb->size - 1;
 	while (counta >= 0)
 	{
-		rem = longb->val[counta] & 1;
-		longb->val[counta] = (longb->val[counta] + mod * longb->base) >> 1;
+		rem = longb->val[counta] & 1u;
+		longb->val[counta] = (longb->val[counta] + mod * longb->base) >> 1u;
 		if (!longb->val[counta] && counta == longb->size - 1)
 			longb->size--;
 		mod = rem;
@@ -101,18 +105,18 @@ int		div2_longb_uint(t_longb *longb)
 	return (1);
 }
 
-int		div_longb_uint(t_longb *longb, t_uint a)
+int		div_longb_10(t_longb *longb)
 {
 	int			counta;
-	t_ullong	mod;
-	t_ullong	rem;
+	t_uint		mod;
+	t_uint		rem;
 
 	mod = 0;
 	counta = longb->size - 1;
 	while (counta >= 0)
 	{
-		rem = longb->val[counta] % a;
-		longb->val[counta] = (longb->val[counta] + mod * longb->base) / a;
+		rem = longb->val[counta] % 10;
+		longb->val[counta] = (longb->val[counta] + mod * longb->base) / 10ul;
 		if (!longb->val[counta] && counta == longb->size - 1)
 			longb->size--;
 		mod = rem;

@@ -12,10 +12,10 @@
 
 #include "ft_printf.h"
 
-int		get_longb_len(t_longb *longb)
+int			get_longb_len(t_longb *longb)
 {
 	int			len;
-	t_uint		val;
+	t_ulong		val;
 
 	len = 0;
 	if (longb->size)
@@ -25,7 +25,7 @@ int		get_longb_len(t_longb *longb)
 		else
 		{
 			if (longb->size != 1)
-				len += ((longb->size - 1) * 9);
+				len += ((longb->size - 1) * LONG_BASE_ORDER);
 			val = longb->val[longb->size - 1];
 			while (val)
 			{
@@ -37,18 +37,18 @@ int		get_longb_len(t_longb *longb)
 	return (len);
 }
 
-int		get_val_by_pos(t_longb *longb, int pos)
+t_ullong	get_val_by_pos(t_longb *longb, int pos)
 {
 	int			count;
-	t_ullong	val;
+	t_ulong		val;
 
 	val = 0;
 	count = 0;
 	if (pos >= 0)
 	{
-		while (pos >= 9)
+		while (pos >= LONG_BASE_ORDER)
 		{
-			pos -= 9;
+			pos -= LONG_BASE_ORDER;
 			count++;
 		}
 		if (count < longb->size)
@@ -65,10 +65,10 @@ int		get_val_by_pos(t_longb *longb, int pos)
 	return (val);
 }
 
-int		calc_lval(t_fpoint *fdata, t_longb *lval)
+int			calc_lval(t_fpoint *fdata, t_longb *lval)
 {
 	t_longb		help;
-	long		size;
+	t_uint		size;
 
 	init_longb(lval, 0);
 	if (fdata->exp >= 0)
@@ -91,20 +91,20 @@ int		calc_lval(t_fpoint *fdata, t_longb *lval)
 	return (get_longb_len(lval));
 }
 
-int		init_max_val(t_longb *val)
+int			init_max_val(t_longb *val)
 {
 	int count;
 
 	count = 0;
 	init_longb(val, 0);
-	val->val[val->max_size - 1] = 5 * 1000 * 1000 * 100u;
+	val->val[val->max_size - 1] = LONG_BASE / 2u;
 	while (count < (val->max_size - 1))
 		val->val[count++] = 0;
 	val->size = val->max_size;
 	return (0);
 }
 
-int		calc_rval(t_fpoint *fdata, t_longb *rval)
+int			calc_rval(t_fpoint *fdata, t_longb *rval)
 {
 	t_longb		bignum;
 	long		bits;

@@ -29,7 +29,7 @@ static int		check_writed(t_print *print, char c, int *writed, int *len)
 	return (1);
 }
 
-static t_ullong	reduce_val(t_ullong val, size_t *base)
+static t_ullong	reduce_val(t_ullong val, t_ulong *base)
 {
 	t_ullong	new_val;
 
@@ -41,7 +41,7 @@ static t_ullong	reduce_val(t_ullong val, size_t *base)
 int				print_longb(t_print *print, t_longb *longb, int *len)
 {
 	int			count;
-	size_t		base;
+	t_ulong		base;
 	t_ullong	val;
 	int			writed;
 
@@ -80,14 +80,14 @@ int				round_double(t_print *print, t_fpoint *fdata,
 	print->max_rlen = get_longb_len(&round);
 	order = -1;
 	while (++order < point_len)
-		div_longb_uint(&round, 10);
+		div_longb_10(&round);
 	if (print->max_rlen >= order &&
 		!longb_cmpn(rval, &round, print->max_rlen - order))
 	{
 		if (print->point_len &&
-			(!(get_val_by_pos(rval, print->max_rlen - order) & 1)))
+			(!(get_val_by_pos(rval, print->max_rlen - order) & 1u)))
 			return (0);
-		if (!print->point_len && (!(get_val_by_pos(lval, 0) & 1)))
+		if (!print->point_len && (!(get_val_by_pos(lval, 0) & 1u)))
 			return (0);
 	}
 	if (!add_longb(rval, &round))

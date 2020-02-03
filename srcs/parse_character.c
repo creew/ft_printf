@@ -63,7 +63,7 @@ int				add_c_with_flag(t_print *print, char *c, int len)
 	return (writed);
 }
 
-int				parse_character(char type, t_print *print, va_list *ptr)
+int				parse_character(int type, t_print *print, va_list *ptr)
 {
 	wchar_t			wch[2];
 	unsigned char	val[2];
