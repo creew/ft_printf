@@ -50,20 +50,22 @@ int			longb_cmpn(t_longb *a, t_longb *b, int n)
 	count = 0;
 	while (n >= LONG_BASE_ORDER)
 	{
-		if (a->val[count] != b->val[count])
+		if (count >= a->size || count >= b->size ||
+				a->val[count] != b->val[count])
 			return (1);
 		n -= LONG_BASE_ORDER;
 		count++;
 	}
+	if (count >= a->size || count >= b->size)
+		return (1);
 	vala = a->val[count];
 	valb = b->val[count];
-	while (n)
+	while (n--)
 	{
 		if (vala % 10 != valb % 10)
 			return (1);
 		vala /= 10;
 		valb /= 10;
-		n--;
 	}
 	return (0);
 }

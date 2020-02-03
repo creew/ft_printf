@@ -128,7 +128,7 @@ typedef struct	s_fpoint
 
 typedef struct	s_longb
 {
-	t_ulong		val[50];
+	t_ulong		val[280];
 	int			max_size;
 	int			size;
 	t_ulong		base;
