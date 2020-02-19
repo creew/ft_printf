@@ -78,9 +78,17 @@ int				round_double(t_print *print, t_fpoint *fdata,
 	calc_rval(fdata, rval);
 	init_max_val(&round);
 	print->max_rlen = get_longb_len(&round);
-	order = -1;
-	while (++order < point_len)
+	order = 0;
+	while (order + LONG_BASE_ORDER <= point_len) {
+		order += LONG_BASE_ORDER;
+		round.val[round.size - 2] = round.val[round.size - 1];
+		round.size--;
+	}
+	while (order < point_len)
+	{
+		order++;
 		div_longb_10(&round);
+	}
 	if (print->max_rlen >= order &&
 		!longb_cmpn(rval, &round, print->max_rlen - order))
 	{
@@ -104,7 +112,7 @@ int				add_double(t_print *print, t_longb *lval, t_longb *rval)
 	writed = print_longb(print, lval, NULL);
 	if (print->point_len)
 	{
-		writed += add_to_out(print, '.');
+		writed += add_to_out(print, DECIMAL_POINT);
 		lpoint = print->point_len - 1;
 		r_len = get_longb_len(rval);
 		while (r_len++ < print->max_rlen && lpoint-- > 0)

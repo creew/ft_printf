@@ -92,8 +92,12 @@ static int	check_nan(t_print *print, t_fpoint *val)
 		small = print->type == 'f';
 		print->type = 's';
 		print->flags &= ~FLAG_NULL;
-		if (val->mant & MANT_NAN)
-			writed += add_c_with_flag(print, small ? "nan" : "NAN", 3);
+		if (val->mant & MANT_NAN){
+			if (val->is_neg)
+				writed += add_c_with_flag(print, small ? "-nan" : "-NAN", 4);
+			else
+				writed += add_c_with_flag(print, small ? "nan" : "NAN", 3);
+		}
 		else if (val->is_neg && val->mant & MANT_INF)
 			writed += add_c_with_flag(print, small ? "-inf" : "-INF", 4);
 		else

@@ -25,6 +25,7 @@
 
 # define BUF_SIZE	128
 
+# define DECIMAL_POINT '.'
 # define FLAGS_STR "+- #0"
 # define FLAG_PLUS	(1u)
 # define FLAG_MINUS	(2u)
